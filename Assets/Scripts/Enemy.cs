@@ -8,10 +8,17 @@ public class Enemy : MonoBehaviour
     private float speed = 0.5f;
     private float timer = 0.0f;
     private float interval_shot = 2.0f;
+    private float direction = 1.0f;
+
+    void Start()
+    {
+        direction = Random.value < 0.5f ? 1.0f : -1.0f;
+    }
 
     void Update()
     {
         transform.Translate(Vector3.up * speed * Time.deltaTime);
+        transform.Translate(Vector3.left * direction * speed * Time.deltaTime);
 
         CountInterval();
 
@@ -35,7 +42,7 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Wall")
+        if (other.gameObject.tag == "Shield")
         {
             Destroy(gameObject);
         }
@@ -48,6 +55,11 @@ public class Enemy : MonoBehaviour
             {
                 Destroy(gameObject);
             }
+        }
+
+        if (other.gameObject.tag == "Wall")
+        {
+            direction *= -1;
         }
     }
 }
